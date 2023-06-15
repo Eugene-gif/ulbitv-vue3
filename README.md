@@ -1,4 +1,4 @@
-# ulbi_tv-cli
+# ulbi_tv-vue3-cli
 
 ## Project setup
 ```

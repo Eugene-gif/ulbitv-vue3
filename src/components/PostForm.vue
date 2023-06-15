@@ -1,5 +1,8 @@
 <script>
+  import Button from "@/components/UI/Button.vue";
+
   export default {
+    components: {Button},
     data() {
       return{
         post: {
@@ -38,12 +41,11 @@
         placeholder="Описание поста"
       >
     </div>
-    <button 
+    <Button
       @click="createPost"
-      class="post-add__btn"
-    >
-      Добавить пост
-    </button>
+      class="post-add__btn" 
+      label="Добавить пост" 
+    />
   </form>
 </template>
 
@@ -68,31 +70,14 @@
       padding: 10px;
       border-radius: 6px;
 
-      &:focus-visible {
-        outline-color: lightskyblue;
+      &:focus {
+        outline: 2px solid lightskyblue;
       }
     }
 
     &__btn {
-      padding: 8px 10px;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      border-radius: 6px;
-      color: #fff;
-      background-color: darkcyan;
-      transition: all 0.3s;
       display: block;
       margin-left: auto;
-
-      &:focus {
-        outline: 2px solid lightskyblue;
-      }
-
-      &:active {
-        background-color: thistle;
-      }
     }
   }
 </style>
