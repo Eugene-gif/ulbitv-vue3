@@ -2,49 +2,52 @@
   import Button from "@/components/UI/Button.vue";
 
   export default {
-    components: {Button},
+    components: { Button },
     data() {
-      return{
+      return {
         post: {
-          title: '',
-          body: '',
-        }
-      }
+          title: "",
+          body: "",
+        },
+      };
     },
     methods: {
       createPost() {
         this.post.id = Date.now();
-        this.$emit('create', this.post); // Первым параметром всегда принимается название события, которое мы генерируем, вторые и последующие параметры - это аргументы которые будут попадать в соответствующую функцию
+        this.$emit("create", this.post); // Первым параметром всегда принимается название события, которое мы генерируем, вторые и последующие параметры - это аргументы которые будут попадать в соответствующую функцию
         this.post = {
-          title: '',
-          body: '',
-        }
-      }
-    }
-  }
+          title: "",
+          body: "",
+        };
+      },
+    },
+  };
 </script>
 
 <template>
-  <form class="post-add" @submit.prevent>
+  <form
+    class="post-add"
+    @submit.prevent
+  >
     <h3 class="post-add__title">Создание поста</h3>
     <div class="post-add__fields">
-      <input 
+      <input
         v-model="post.title"
-        class="post-add__input" 
-        type="text" 
+        class="post-add__input"
+        type="text"
         placeholder="Название поста"
-      >
-      <input 
+      />
+      <input
         v-model="post.body"
-        class="post-add__input" 
-        type="text" 
+        class="post-add__input"
+        type="text"
         placeholder="Описание поста"
-      >
+      />
     </div>
     <Button
       @click="createPost"
-      class="post-add__btn" 
-      label="Добавить пост" 
+      class="post-add__btn"
+      label="Добавить пост"
     />
   </form>
 </template>

@@ -1,25 +1,27 @@
 <script>
   export default {
     props: {
-      label: '',
-      color: '',
-      textColor: '',
-      width: '',
-      height: '',
-    }
-  }
+      label: "",
+      color: "",
+      textColor: "",
+      width: "",
+      height: "",
+    },
+  };
 </script>
 
 <template>
-  <button class="btn" 
+  <button
+    class="btn"
     :style="`
-      background-color: ${color}; 
-      color: ${textColor}; 
-      width: ${width}; 
+      background-color: ${color};
+      color: ${textColor};
+      width: ${width};
       height: ${height};
 
-  `">
-    {{ label || 'Button' }}
+  `"
+  >
+    {{ label || "Button" }}
   </button>
 </template>
 
