@@ -1,15 +1,15 @@
 <script>
-  import Button from './UI/Button.vue';
+  import Button from "./UI/Button.vue";
 
   export default {
     props: {
       post: {
         type: Object,
         required: false,
-      }
-    }, 
-    components: {Button},
-  }
+      },
+    },
+    components: { Button },
+  };
 </script>
 
 <template>
@@ -17,16 +17,19 @@
     <div class="post__wrapper">
       <div class="post__row">
         <strong>Название:</strong>
-        <span>{{ post.title || 'Title post' }}</span>
+        <span>{{ post.title || "Title post" }}</span>
       </div>
       <div class="post__row">
-        <strong>Описание:</strong> 
-        <span>{{ post.body || 'Body post' }}</span>
+        <strong>Описание:</strong>
+        <span>{{ post.body || "Body post" }}</span>
       </div>
     </div>
 
     <div class="post__btns">
-      <Button label="Удалить" color="#FF4747" />
+      <Button
+        label="Удалить"
+        color="#FF4747"
+      />
     </div>
   </div>
 </template>
