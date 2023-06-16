@@ -23,6 +23,9 @@
         // post - это параметр передаваемый из PostForm.vue через $emit('create', this.post)
         this.posts.push(post);
       },
+      removePost(post) {
+        this.posts = this.posts.filter((p) => p.id !== post.id);
+      },
     },
   };
 </script>
@@ -30,7 +33,10 @@
 <template>
   <div class="wrapper">
     <PostForm @create="createPost" />
-    <PostList :posts="posts" />
+    <PostList
+      :posts="posts"
+      @remove="removePost"
+    />
   </div>
 </template>
 

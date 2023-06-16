@@ -28,17 +28,12 @@
   >
     <h3 class="post-add__title">Создание поста</h3>
     <div class="post-add__fields">
-      <input
+      <Input
         v-model="post.title"
-        class="post-add__input"
-        type="text"
         placeholder="Название поста"
       />
-      <Input />
-      <input
+      <Input
         v-model="post.body"
-        class="post-add__input"
-        type="text"
         placeholder="Описание поста"
       />
     </div>
@@ -65,16 +60,6 @@
       gap: 10px;
       margin-bottom: 10px;
     }
-
-    // &__input {
-    //   border: 1px solid teal;
-    //   padding: 10px;
-    //   border-radius: 6px;
-
-    //   &:focus {
-    //     outline: 2px solid lightskyblue;
-    //   }
-    // }
 
     &__btn {
       display: block;

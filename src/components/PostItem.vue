@@ -24,6 +24,7 @@
 
     <div class="post__btns">
       <Button
+        @click="$emit('remove', post)"
         label="Удалить"
         color="#FF4747"
       />
