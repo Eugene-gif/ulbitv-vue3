@@ -1,8 +1,5 @@
 <script>
-  import Button from "@/components/UI/Button.vue";
-
   export default {
-    components: { Button },
     data() {
       return {
         post: {
@@ -37,6 +34,7 @@
         type="text"
         placeholder="Название поста"
       />
+      <Input />
       <input
         v-model="post.body"
         class="post-add__input"
@@ -68,15 +66,15 @@
       margin-bottom: 10px;
     }
 
-    &__input {
-      border: 1px solid teal;
-      padding: 10px;
-      border-radius: 6px;
+    // &__input {
+    //   border: 1px solid teal;
+    //   padding: 10px;
+    //   border-radius: 6px;
 
-      &:focus {
-        outline: 2px solid lightskyblue;
-      }
-    }
+    //   &:focus {
+    //     outline: 2px solid lightskyblue;
+    //   }
+    // }
 
     &__btn {
       display: block;

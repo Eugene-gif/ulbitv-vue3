@@ -1,6 +1,4 @@
 <script>
-  import Button from "./UI/Button.vue";
-
   export default {
     props: {
       post: {
@@ -8,7 +6,6 @@
         required: false,
       },
     },
-    components: { Button },
   };
 </script>
 
