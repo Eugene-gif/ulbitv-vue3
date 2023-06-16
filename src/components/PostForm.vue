@@ -1,8 +1,5 @@
 <script>
-  import Button from "@/components/UI/Button.vue";
-
   export default {
-    components: { Button },
     data() {
       return {
         post: {
@@ -31,16 +28,12 @@
   >
     <h3 class="post-add__title">Создание поста</h3>
     <div class="post-add__fields">
-      <input
+      <Input
         v-model="post.title"
-        class="post-add__input"
-        type="text"
         placeholder="Название поста"
       />
-      <input
+      <Input
         v-model="post.body"
-        class="post-add__input"
-        type="text"
         placeholder="Описание поста"
       />
     </div>
@@ -66,16 +59,6 @@
       flex-direction: column;
       gap: 10px;
       margin-bottom: 10px;
-    }
-
-    &__input {
-      border: 1px solid teal;
-      padding: 10px;
-      border-radius: 6px;
-
-      &:focus {
-        outline: 2px solid lightskyblue;
-      }
     }
 
     &__btn {

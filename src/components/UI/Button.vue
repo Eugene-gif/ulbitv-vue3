@@ -1,5 +1,6 @@
 <script>
   export default {
+    name: 'Button',
     props: {
       label: "",
       color: "",

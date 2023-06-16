@@ -20,9 +20,9 @@
     <h3>Список элементов:</h3>
     <template
       v-for="post in posts"
-      key="id"
+      :key="post.id"
     >
-      <PostItem :post="post" />
+      <PostItem :post="post" @remove="$emit('remove',post)" />
     </template>
   </div>
 </template>
