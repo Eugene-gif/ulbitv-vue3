@@ -29,11 +29,11 @@
     <h3 class="post-add__title">Создание поста</h3>
     <div class="post-add__fields">
       <Input
-        v-model="post.title"
+        v-model.trim="post.title"
         placeholder="Название поста"
       />
       <Input
-        v-model="post.body"
+        v-model.trim="post.body"
         placeholder="Описание поста"
       />
     </div>
