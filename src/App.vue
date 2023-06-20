@@ -1,7 +1,7 @@
 <script>
   import PostForm from "@/components/PostForm.vue";
   import PostList from "@/components/PostList.vue";
-
+  import axios from "axios";
   export default {
     components: {
       PostList,
@@ -9,13 +9,14 @@
     },
     data() {
       return {
-        posts: [
-          { id: 1, title: "JavaScript 1", body: "Описание поста 1" },
-          { id: 2, title: "JavaScript 2", body: "Описание поста 2" },
-          { id: 3, title: "JavaScript 3", body: "Описание поста 3" },
-          { id: 4, title: "JavaScript 4", body: "Описание поста 4" },
-        ],
+        posts: [],
         dialogVisible: false,
+        isPostsLoading: false,
+        selectedSort: "",
+        sortOptions: [
+          { value: "title", name: "По названию" },
+          { value: "body", name: "По содержимому" },
+        ],
         // modificatorValue: '',
       };
     },
@@ -30,7 +31,23 @@
       },
       showDialog() {
         this.dialogVisible = true;
-      }
+      },
+      async fetchPosts() {
+        try {
+          this.isPostsLoading = true;
+          const response = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          );
+          this.posts = response.data;
+        } catch (e) {
+          alert(`Ошибка ${e}`);
+        } finally {
+          this.isPostsLoading = false;
+        }
+      },
+    },
+    mounted() {
+      this.fetchPosts();
     },
   };
 </script>
@@ -38,14 +55,18 @@
 <template>
   <div class="wrapper">
     <h1 class="title mb-20">Страница с постами</h1>
+    <div class="buttons">
+      <Button
+        @click="showDialog"
+        class="mb-20"
+        label="Создать пост"
+      />
+      <Select v-model="selectedSort" :options="sortOptions" > </Select>
+    </div>
     <!-- <Input type="number" v-model.number="modificatorValue" /> -->
     <!-- <Input type="text" v-model.trim="modificatorValue" /> -->
     <!-- <Input type="number" v-model.lazy="modificatorValue" /> -->
-    <Button
-      @click="showDialog"
-      class="mb-20"
-      label="Создать пост"
-    />
+
     <Dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </Dialog>
@@ -53,7 +74,9 @@
     <PostList
       :posts="posts"
       @remove="removePost"
+      v-if="!isPostsLoading"
     />
+    <h3 v-else>Loading...</h3>
   </div>
 </template>
 
@@ -70,6 +93,14 @@
 
   .wrapper {
     padding: 10px 15px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 
   .title {
