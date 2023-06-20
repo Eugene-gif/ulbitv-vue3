@@ -12,6 +12,11 @@
         posts: [],
         dialogVisible: false,
         isPostsLoading: false,
+        selectedSort: "",
+        sortOptions: [
+          { value: "title", name: "По названию" },
+          { value: "body", name: "По содержимому" },
+        ],
         // modificatorValue: '',
       };
     },
@@ -50,14 +55,18 @@
 <template>
   <div class="wrapper">
     <h1 class="title mb-20">Страница с постами</h1>
+    <div class="buttons">
+      <Button
+        @click="showDialog"
+        class="mb-20"
+        label="Создать пост"
+      />
+      <Select v-model="selectedSort" :options="sortOptions" > </Select>
+    </div>
     <!-- <Input type="number" v-model.number="modificatorValue" /> -->
     <!-- <Input type="text" v-model.trim="modificatorValue" /> -->
     <!-- <Input type="number" v-model.lazy="modificatorValue" /> -->
-    <Button
-      @click="showDialog"
-      class="mb-20"
-      label="Создать пост"
-    />
+
     <Dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </Dialog>
@@ -84,6 +93,14 @@
 
   .wrapper {
     padding: 10px 15px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 
   .title {
