@@ -49,6 +49,24 @@
     mounted() {
       this.fetchPosts();
     },
+    computed: {
+      // В <PostList/> передаем это computed-свойство, обращаясь просто по названию этого свойства плюс такого подхода по сравнению с watch в том, что мы не изменяем исходный массив постов, а взаимодействуем и изменяем копию
+      sortedPosts() {
+        return [...this.posts].sort((post1, post2) =>
+          post1[this.selectedSort]?.localeCompare(
+            post2[this.selectedSort]
+          )
+        );
+      },
+    },
+    // Это реализация функции наблюдателя, здесь мы работаем и изменяем исходный массив
+    // watch: {
+    //   selectedSort(newValue) {
+    //     this.posts.sort((post1, post2) => {
+    //       return post1[newValue]?.localeCompare(post2[newValue]);
+    //     });
+    //   },
+    // },
   };
 </script>
 
@@ -61,18 +79,19 @@
         class="mb-20"
         label="Создать пост"
       />
-      <Select v-model="selectedSort" :options="sortOptions" > </Select>
+      <Select
+        v-model="selectedSort"
+        :options="sortOptions"
+      >
+      </Select>
     </div>
-    <!-- <Input type="number" v-model.number="modificatorValue" /> -->
-    <!-- <Input type="text" v-model.trim="modificatorValue" /> -->
-    <!-- <Input type="number" v-model.lazy="modificatorValue" /> -->
 
     <Dialog v-model:show="dialogVisible">
       <PostForm @create="createPost" />
     </Dialog>
 
     <PostList
-      :posts="posts"
+      :posts="sortedPosts"
       @remove="removePost"
       v-if="!isPostsLoading"
     />

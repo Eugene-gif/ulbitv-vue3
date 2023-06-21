@@ -14,11 +14,11 @@
     <div class="post__wrapper">
       <div class="post__row">
         <strong>Название:</strong>
-        <span>{{ post.title || "Title post" }}</span>
+        <span>{{ post.title || "Template title post" }}</span>
       </div>
       <div class="post__row">
         <strong>Описание:</strong>
-        <span>{{ post.body || "Body post" }}</span>
+        <span>{{ post.body || "Template body post" }}</span>
       </div>
     </div>
 
@@ -46,6 +46,11 @@
       display: flex;
       gap: 15px;
       align-items: center;
+      hyphens: auto;
+      strong,
+      span {
+        word-wrap: break-word;
+      }
     }
   }
 </style>

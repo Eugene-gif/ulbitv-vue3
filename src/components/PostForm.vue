@@ -18,6 +18,15 @@
         };
       },
     },
+    // watch: {
+    // Глубокое отслеживание объекта
+    // post: {
+    //   handler(newValue) {
+    //     console.log(newValue);
+    //   },
+    //   deep: true,
+    // },
+    // },
   };
 </script>
 
