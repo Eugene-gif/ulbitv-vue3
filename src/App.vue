@@ -17,6 +17,7 @@
           { value: "title", name: "По названию" },
           { value: "body", name: "По содержимому" },
         ],
+        searchQuery: "",
         // modificatorValue: '',
       };
     },
@@ -58,6 +59,11 @@
           )
         );
       },
+      sortedAndSearchedPosts() {
+        return this.sortedPosts.filter((post) =>
+          post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      },
     },
     // Это реализация функции наблюдателя, здесь мы работаем и изменяем исходный массив
     // watch: {
@@ -73,6 +79,7 @@
 <template>
   <div class="wrapper">
     <h1 class="title mb-20">Страница с постами</h1>
+    <Input class="search" v-model="searchQuery" placeholder="Поиск..." />
     <div class="buttons">
       <Button
         @click="showDialog"
@@ -91,7 +98,7 @@
     </Dialog>
 
     <PostList
-      :posts="sortedPosts"
+      :posts="sortedAndSearchedPosts"
       @remove="removePost"
       v-if="!isPostsLoading"
     />
@@ -112,6 +119,11 @@
 
   .wrapper {
     padding: 10px 15px;
+  }
+
+  .search {
+    margin-bottom: 20px;
+    width: 100%;
   }
 
   .buttons {
