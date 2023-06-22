@@ -20,6 +20,10 @@
         <strong>Описание:</strong>
         <span>{{ post.body || "Template body post" }}</span>
       </div>
+      <div class="post__row">
+        <strong>ID:</strong>
+        <span>{{ post.id || "ID post" }}</span>
+      </div>
     </div>
 
     <div class="post__btns">

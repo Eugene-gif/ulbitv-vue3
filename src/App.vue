@@ -17,6 +17,10 @@
           { value: "title", name: "По названию" },
           { value: "body", name: "По содержимому" },
         ],
+        searchQuery: "",
+        page: 1,
+        limit: 10,
+        totalPages: 0,
         // modificatorValue: '',
       };
     },
@@ -32,11 +36,24 @@
       showDialog() {
         this.dialogVisible = true;
       },
+      changePage(pageNumber) {
+        this.page = pageNumber;
+        // this.fetchPosts() // Можно повесить watch на page, тогда не нужно здесь явно указывать вызов функции
+      },
       async fetchPosts() {
         try {
           this.isPostsLoading = true;
           const response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
+          );
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
           );
           this.posts = response.data;
         } catch (e) {
@@ -58,6 +75,13 @@
           )
         );
       },
+      sortedAndSearchedPosts() {
+        return this.sortedPosts.filter((post) =>
+          post.title
+            .toLowerCase()
+            .includes(this.searchQuery.toLowerCase())
+        );
+      },
     },
     // Это реализация функции наблюдателя, здесь мы работаем и изменяем исходный массив
     // watch: {
@@ -67,12 +91,22 @@
     //     });
     //   },
     // },
+    watch: {
+      page() {
+        this.fetchPosts();
+      }
+    }
   };
 </script>
 
 <template>
   <div class="wrapper">
     <h1 class="title mb-20">Страница с постами</h1>
+    <Input
+      class="search mb-20"
+      v-model="searchQuery"
+      placeholder="Поиск..."
+    />
     <div class="buttons">
       <Button
         @click="showDialog"
@@ -91,11 +125,30 @@
     </Dialog>
 
     <PostList
-      :posts="sortedPosts"
-      @remove="removePost"
       v-if="!isPostsLoading"
+      :posts="sortedAndSearchedPosts"
+      @remove="removePost"
+      class="mb-20"
     />
-    <h3 v-else>Loading...</h3>
+    <h3
+      v-else
+      class="mb-20"
+    >
+      Loading...
+    </h3>
+    <div class="number-page">
+      <div
+        v-for="pageNumber in totalPages"
+        :key="pageNumber"
+        @click="changePage(pageNumber)"
+        class="number-page__item"
+        :class="{
+          'number-page__item--current' : page === pageNumber
+        }"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -112,6 +165,11 @@
 
   .wrapper {
     padding: 10px 15px;
+    height: 100vh;
+  }
+
+  .search {
+    width: 100%;
   }
 
   .buttons {
@@ -127,6 +185,30 @@
     font-weight: 600;
     line-height: 1.5;
   }
+
+  .number-page {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    position: sticky;
+    bottom: 0;
+    padding: 10px;
+    background-color: lightgrey;
+    &__item {
+      background-color: teal;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    &__item--current {
+      @extend .number-page__item;
+      background-color: #9e9e9e;
+      color: #000;
+      cursor: default;
+    }
+  }
+
   .mb-20 {
     margin-bottom: 20px;
   }
