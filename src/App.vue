@@ -36,10 +36,10 @@
       showDialog() {
         this.dialogVisible = true;
       },
-      changePage(pageNumber) {
-        this.page = pageNumber;
-        // this.fetchPosts() // Можно повесить watch на page, тогда не нужно здесь явно указывать вызов функции
-      },
+      // changePage(pageNumber) {
+      //   this.page = pageNumber;
+      //   // this.fetchPosts() // Можно повесить watch на page, тогда не нужно здесь явно указывать вызов функции
+      // },
       async fetchPosts() {
         try {
           this.isPostsLoading = true;
@@ -62,9 +62,48 @@
           this.isPostsLoading = false;
         }
       },
+      async loadMorePosts() {
+        try {
+          this.page += 1;
+          // this.isPostsLoading = true;
+          const response = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
+          );
+          this.totalPages = Math.ceil(
+            response.headers["x-total-count"] / this.limit
+          );
+          this.posts = [...this.posts, ...response.data];
+        } catch (e) {
+          alert(`Ошибка ${e}`);
+        }
+        // finally {
+          // this.isPostsLoading = false;
+        // }
+      },
     },
     mounted() {
       this.fetchPosts();
+      console.log(this.$refs.observer);
+      const options = {
+        root: document.querySelector("#scrollArea"),
+        rootMargin: "0px",
+        threshold: 1.0,
+      };
+
+      const callback = (entries, observer) => {
+        if(entries[0].isIntersecting && this.page < this.totalPages) {
+          this.loadMorePosts()
+        }
+      }
+
+      const observer = new IntersectionObserver(callback, options);
+      observer.observe(this.$refs.observer);
     },
     computed: {
       // В <PostList/> передаем это computed-свойство, обращаясь просто по названию этого свойства плюс такого подхода по сравнению с watch в том, что мы не изменяем исходный массив постов, а взаимодействуем и изменяем копию
@@ -92,10 +131,10 @@
     //   },
     // },
     watch: {
-      page() {
-        this.fetchPosts();
-      }
-    }
+      // page() {
+      //   this.fetchPosts();
+      // }
+    },
   };
 </script>
 
@@ -136,7 +175,8 @@
     >
       Loading...
     </h3>
-    <div class="number-page">
+    <div ref="observer" class="observer"></div>
+    <!-- <div class="number-page">
       <div
         v-for="pageNumber in totalPages"
         :key="pageNumber"
@@ -148,7 +188,7 @@
       >
         {{ pageNumber }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -207,6 +247,11 @@
       color: #000;
       cursor: default;
     }
+  }
+
+  .observer {
+    height: 30px;
+    background-color: #fff;
   }
 
   .mb-20 {
