@@ -28,7 +28,7 @@
 
 <style lang="scss" scoped>
   .btn {
-    padding: 8px 10px;
+    padding: 7px 10px;
     font-size: 16px;
     font-weight: 600;
     border: none;

@@ -28,6 +28,13 @@
 
     <div class="post__btns">
       <Button
+        class="post__btn--open"
+        @click="$router.push(`/posts/${post.id}`)"
+        label="Открыть пост"
+        color="teal"
+      />
+
+      <Button
         @click="$emit('remove', post)"
         label="Удалить"
         color="#FF4747"
@@ -40,6 +47,7 @@
   .post {
     padding: 15px;
     border: 2px solid teal;
+    background-color: lightgrey;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
@@ -55,6 +63,13 @@
       span {
         word-wrap: break-word;
       }
+    }
+
+    &__btns {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      min-width: 150px;
     }
   }
 </style>
