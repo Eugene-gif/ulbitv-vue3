@@ -20,7 +20,7 @@
         <strong>Описание:</strong>
         <span>{{ post.body || "Template body post" }}</span>
       </div>
-      <div class="post__row">
+      <div class="post__row id">
         <strong>ID:</strong>
         <span>{{ post.id || "ID post" }}</span>
       </div>
@@ -28,13 +28,14 @@
 
     <div class="post__btns">
       <Button
-        class="post__btn--open"
+        class="post__btn"
         @click="$router.push(`/posts/${post.id}`)"
         label="Открыть пост"
         color="teal"
       />
 
       <Button
+        class="post__btn"
         @click="$emit('remove', post)"
         label="Удалить"
         color="#FF4747"
@@ -67,9 +68,33 @@
 
     &__btns {
       display: flex;
-      gap: 10px;
       flex-direction: column;
-      min-width: 150px;
+      min-width: 140px;
+      gap: 10px;
+    }
+
+    @media (max-width: 760px) {
+      flex-direction: column;
+      &__row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        margin-bottom: 10px;
+      }
+
+      &__row:nth-last-of-type(1) {
+        margin-bottom: 0;
+      }
+
+      &__btns {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      &__btn {
+        width: 49%;
+      }
     }
   }
 </style>

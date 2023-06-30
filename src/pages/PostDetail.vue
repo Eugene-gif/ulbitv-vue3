@@ -1,4 +1,5 @@
-<script></script>
+<script>
+</script>
 
 <template>
   <h2>Страница поста c ID = {{ $route.params.id }}</h2>

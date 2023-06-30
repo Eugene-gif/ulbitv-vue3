@@ -1,14 +1,14 @@
 <script></script>
 
 <template>
-  <nav class="navbar">
+  <header class="header">
     <div
-      class="navbar__title"
+      class="header__title"
       @click="$router.push('/')"
     >
       Vue 3
     </div>
-    <div class="navbar__list">
+    <div class="header__list">
       <Button
         label="Посты"
         @click="$router.push('/posts')"
@@ -18,17 +18,20 @@
         @click="$router.push('/about')"
       />
     </div>
-  </nav>
+  </header>
 </template>
 
 <style lang="scss" scoped>
-  .navbar {
+  .header {
+    position: fixed;
+    width: 100%;
+    height: 60px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding: 10px 10px;
+    padding: 0 10px;
     text-decoration: none;
-    background-color: rosybrown;
+    background-color: #03A9F4;
     gap: 15px;
     box-shadow: 0 0 5px black;
 
