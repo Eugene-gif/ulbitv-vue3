@@ -154,12 +154,12 @@
     @remove="removePost"
     class="mb-20"
   />
-  <h3
+  <h2
     v-else
-    class="mb-20"
+    class="loading"
   >
     Loading...
-  </h3>
+  </h2>
   <!-- ref="observer" -->
   <div
     v-intersection="loadMorePosts"
@@ -219,6 +219,15 @@
       color: #000;
       cursor: default;
     }
+  }
+
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    font-size: 36px;
   }
 
   .observer {
