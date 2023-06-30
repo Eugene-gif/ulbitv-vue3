@@ -27,7 +27,7 @@
     grid-template-rows: 1fr min-content;
     height: 100vh;
     overflow-x: hidden;
-    @media(orientation: landscape) {
+    @media (orientation: landscape) {
       .header {
         height: 48px;
       }
@@ -47,6 +47,13 @@
   .content {
     padding: 10px 15px;
     margin-top: 60px;
+  }
+
+  .title {
+    font-size: clamp(2rem, 1.6538rem + 1.5385vw, 3.5rem);
+    line-height: 1.3;
+    font-weight: 800;
+    text-align: center;
   }
 
   .mb-20 {

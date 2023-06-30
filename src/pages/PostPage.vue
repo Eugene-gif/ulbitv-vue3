@@ -90,23 +90,6 @@
     mounted() {
       this.fetchPosts();
       console.log(this.$refs.observer);
-      const options = {
-        root: document.querySelector("#scrollArea"),
-        rootMargin: "0px",
-        threshold: 1.0,
-      };
-
-      const callback = (entries, observer) => {
-        if (
-          entries[0].isIntersecting &&
-          this.page < this.totalPages
-        ) {
-          this.loadMorePosts();
-        }
-      };
-
-      const observer = new IntersectionObserver(callback, options);
-      observer.observe(this.$refs.observer);
     },
     computed: {
       // В <PostList/> передаем это computed-свойство, обращаясь просто по названию этого свойства плюс такого подхода по сравнению с watch в том, что мы не изменяем исходный массив постов, а взаимодействуем и изменяем копию
@@ -177,8 +160,9 @@
   >
     Loading...
   </h3>
+  <!-- ref="observer" -->
   <div
-    ref="observer"
+    v-intersection="loadMorePosts"
     class="observer"
   ></div>
   <!-- <div class="number-page">
@@ -212,12 +196,6 @@
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-  }
-
-  .title {
-    font-size: 42px;
-    font-weight: 600;
-    line-height: 1.5;
   }
 
   .number-page {

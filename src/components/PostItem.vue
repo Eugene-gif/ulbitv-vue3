@@ -74,7 +74,13 @@
     }
 
     @media (max-width: 760px) {
+
       flex-direction: column;
+
+&__wrapper {
+  width: 100%;
+}
+
       &__row {
         flex-direction: column;
         align-items: flex-start;
