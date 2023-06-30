@@ -38,6 +38,7 @@
     <h3 class="post-add__title">Создание поста</h3>
     <div class="post-add__fields">
       <Input
+        v-focus
         v-model.trim="post.title"
         placeholder="Название поста"
       />

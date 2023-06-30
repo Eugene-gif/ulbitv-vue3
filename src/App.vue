@@ -1,22 +1,41 @@
 <script>
-  import Navbar from "@/components/UI/Navbar.vue";
+  import Header from "@/layouts/Header.vue";
+  import Footer from "@/layouts/Footer.vue";
   export default {
     components: {
-      Navbar,
+      Header,
+      Footer,
     },
   };
 </script>
 
 <template>
-  <Navbar />
-  <div class="wrapper">
+  <Header />
+  <div class="content">
     <router-view></router-view>
   </div>
+  <Footer />
 </template>
 
 <style lang="scss">
   body {
     background-color: lightgrey;
+  }
+
+  #app {
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    height: 100vh;
+    overflow-x: hidden;
+    @media (orientation: landscape) {
+      .header {
+        height: 48px;
+      }
+
+      .footer {
+        height: 48px;
+      }
+    }
   }
 
   * {
@@ -25,9 +44,16 @@
     box-sizing: border-box;
   }
 
-  .wrapper {
+  .content {
     padding: 10px 15px;
-    height: 100vh;
+    margin-top: 60px;
+  }
+
+  .title {
+    font-size: clamp(2rem, 1.6538rem + 1.5385vw, 3.5rem);
+    line-height: 1.3;
+    font-weight: 800;
+    text-align: center;
   }
 
   .mb-20 {
