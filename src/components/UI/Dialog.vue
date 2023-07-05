@@ -1,16 +1,11 @@
 <script>
+  import toggleMixin from "@/mixins/toggleMixin.js";
+
   export default {
     name: "Dialog",
-    props: {
-      show: {
-        type: Boolean,
-        default: false,
-      },
-    },
-    methods: {
-      hideDialog () {
-        this.$emit('update:show', false);
-      }
+    mixins: [toggleMixin],
+    mounted() {
+      console.log('Dialog mounted');
     }
   };
 </script>
@@ -21,7 +16,10 @@
     v-if="show"
     @click="hideDialog"
   >
-    <div @click.stop class="dialog__content">
+    <div
+      @click.stop
+      class="dialog__content"
+    >
       <slot></slot>
     </div>
   </div>
