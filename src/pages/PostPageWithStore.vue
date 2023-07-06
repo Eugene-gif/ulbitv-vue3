@@ -4,6 +4,12 @@
   import axios from "axios";
   import Button from "@/components/UI/Button.vue";
   import store from "@/store";
+  import {
+    mapState,
+    mapGetters,
+    mapActions,
+    mapMutations,
+  } from "vuex";
   export default {
     components: {
       PostList,
@@ -12,22 +18,31 @@
     },
     data() {
       return {
-        posts: [],
         dialogVisible: false,
-        isPostsLoading: false,
-        selectedSort: "",
-        sortOptions: [
-          { value: "title", name: "По названию" },
-          { value: "body", name: "По содержимому" },
-        ],
-        searchQuery: "",
-        page: 1,
-        limit: 10,
-        totalPages: 0,
-        // modificatorValue: '',
+        //   posts: [],
+        //   isPostsLoading: false,
+        //   selectedSort: "",
+        //   sortOptions: [
+        //     { value: "title", name: "По названию" },
+        //     { value: "body", name: "По содержимому" },
+        //   ],
+        //   searchQuery: "",
+        //   page: 1,
+        //   limit: 10,
+        //   totalPages: 0,
+        //   // modificatorValue: '',
       };
     },
     methods: {
+      ...mapMutations({
+        setPage: "post/setPage",
+        setSearchQuery: "post/setSearchQuery",
+        setSelectedSort: "post/setSelectedSort",
+      }),
+      ...mapActions({
+        loadMorePosts: "post/loadMorePosts",
+        fetchPosts: "post/fetchPosts",
+      }),
       createPost(post) {
         // post - это параметр передаваемый из PostForm.vue через $emit('create', this.post)
         this.posts.push(post);
@@ -43,82 +58,49 @@
       //   this.page = pageNumber;
       //   // this.fetchPosts() // Можно повесить watch на page, тогда не нужно здесь явно указывать вызов функции
       // },
-      async fetchPosts() {
-        try {
-          this.isPostsLoading = true;
-          const response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              },
-            }
-          );
-          this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
-          );
-          this.posts = response.data;
-        } catch (e) {
-          alert(`Ошибка ${e}`);
-        } finally {
-          this.isPostsLoading = false;
-        }
-      },
-      async loadMorePosts() {
-        try {
-          this.page += 1;
-          // this.isPostsLoading = true;
-          const response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.page,
-                _limit: this.limit,
-              },
-            }
-          );
-          this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
-          );
-          this.posts = [...this.posts, ...response.data];
-        } catch (e) {
-          alert(`Ошибка ${e}`);
-        }
-        // finally {
-        // this.isPostsLoading = false;
-        // }
-      },
     },
     mounted() {
       this.fetchPosts();
-      console.log(this.$refs.observer);
     },
     computed: {
       // В <PostList/> передаем это computed-свойство, обращаясь просто по названию этого свойства плюс такого подхода по сравнению с watch в том, что мы не изменяем исходный массив постов, а взаимодействуем и изменяем копию
-      sortedPosts() {
-        return [...this.posts].sort((post1, post2) =>
-          post1[this.selectedSort]?.localeCompare(
-            post2[this.selectedSort]
-          )
-        );
-      },
-      sortedAndSearchedPosts() {
-        return this.sortedPosts.filter((post) =>
-          post.title
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase())
-        );
-      },
+      // sortedPosts() {
+      //   return [...this.posts].sort((post1, post2) =>
+      //     post1[this.selectedSort]?.localeCompare(
+      //       post2[this.selectedSort]
+      //     )
+      //   );
+      // },
+      // sortedAndSearchedPosts() {
+      //   return this.sortedPosts.filter((post) =>
+      //     post.title
+      //       .toLowerCase()
+      //       .includes(this.searchQuery.toLowerCase())
+      //   );
+      // },
+      // },
+      // Это реализация функции наблюдателя, здесь мы работаем и изменяем исходный массив
+      // watch: {
+      //   selectedSort(newValue) {
+      //     this.posts.sort((post1, post2) => {
+      //       return post1[newValue]?.localeCompare(post2[newValue]);
+      //     });
+      //   },
+      ...mapState({
+        posts: (state) => state.post.posts,
+        isPostsLoading: (state) => state.post.isPostsLoading,
+        selectedSort: (state) => state.post.selectedSort,
+        searchQuery: (state) => state.post.searchQuery,
+        page: (state) => state.post.page,
+        totalPages: (state) => state.post.totalPages,
+        limit: (state) => state.post.limit,
+        sortOptions: (state) => state.post.sortOptions,
+      }),
+      ...mapGetters({
+        sortedPosts: "post/sortedPosts",
+        sortedAndSearchedPosts: "post/sortedAndSearchedPosts",
+      }),
     },
-    // Это реализация функции наблюдателя, здесь мы работаем и изменяем исходный массив
-    // watch: {
-    //   selectedSort(newValue) {
-    //     this.posts.sort((post1, post2) => {
-    //       return post1[newValue]?.localeCompare(post2[newValue]);
-    //     });
-    //   },
-    // },
     watch: {
       // page() {
       //   this.fetchPosts();
@@ -128,7 +110,7 @@
 </script>
 
 <template>
-  <h1 class="title mb-10">
+  <!-- <h1 class="title mb-10">
     {{
       $store.state.isAuth
         ? "Пользователь авторизован"
@@ -161,11 +143,13 @@
       height="40px"
       @click="$store.commit('switchAuth')"
     />
-  </div>
+  </div> -->
+
   <h1 class="title mb-20">Страница с постами</h1>
   <Input
     class="search mb-20"
-    v-model="searchQuery"
+    :model-value="searchQuery"
+    @update:model-value="setSearchQuery"
     placeholder="Поиск..."
   />
   <div class="buttons">
@@ -175,10 +159,10 @@
       label="Создать пост"
     />
     <Select
-      v-model="selectedSort"
+      :model-value="selectedSort"
+      @update:model-value="setSelectedSort"
       :options="sortOptions"
-    >
-    </Select>
+    />
   </div>
 
   <Dialog v-model:show="dialogVisible">
@@ -197,24 +181,24 @@
   >
     Loading...
   </h2>
-  <!-- ref="observer" -->
   <div
     v-intersection="loadMorePosts"
     class="observer"
-  ></div>
+  />
+
   <!-- <div class="number-page">
-      <div
-        v-for="pageNumber in totalPages"
-        :key="pageNumber"
-        @click="changePage(pageNumber)"
-        class="number-page__item"
-        :class="{
-          'number-page__item--current' : page === pageNumber
-        }"
-      >
-        {{ pageNumber }}
-      </div>
-    </div> -->
+    <div
+      v-for="pageNumber in totalPages"
+      :key="pageNumber"
+      @click="changePage(pageNumber)"
+      class="number-page__item"
+      :class="{
+        'number-page__item--current': page === pageNumber,
+      }"
+    >
+      {{ pageNumber }}
+    </div>
+  </div> -->
 </template>
 
 <style lang="scss">
