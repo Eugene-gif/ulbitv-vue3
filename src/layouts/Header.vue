@@ -14,6 +14,10 @@
         @click="$router.push('/posts')"
       />
       <Button
+        label="Store"
+        @click="$router.push('/store')"
+      />
+      <Button
         label="О приложении"
         @click="$router.push('/about')"
       />
