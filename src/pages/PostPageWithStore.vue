@@ -145,7 +145,7 @@
     />
   </div> -->
 
-  <h1 class="title mb-20">Страница с постами</h1>
+  <h1 class="title mb-20">Страница с постами Store</h1>
   <Input
     class="search mb-20"
     :model-value="searchQuery"

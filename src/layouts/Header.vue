@@ -18,6 +18,10 @@
         @click="$router.push('/store')"
       />
       <Button
+        label="Composition API"
+        @click="$router.push('/composition')"
+      />
+      <Button
         label="О приложении"
         @click="$router.push('/about')"
       />
